@@ -1,0 +1,65 @@
+
+/* Here you can start styling. ^_^*/
+
+nav {
+    background-color: rgb(221, 206, 186)
+}
+
+#sone {
+	padding-top:4rem;
+    margin: 50px 0 50px 0;
+}
+
+#stwo {
+	padding-top:4rem;
+	min-height: 100vh;
+}
+
+#sthree {
+	padding-top:4rem;
+	min-height: 100vh;
+}
+
+#sfour {
+	padding-top:4rem;
+	min-height: 100vh;
+}
+
+body {
+    background-image: url(../img/backgrounds/web%20background.jpeg)
+}
+
+h1 {
+    font-family: "Viaoda Libre";
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+footer {
+    clear: both;
+    background-color: #b5cae2;
+    margin-bottom: -30px;
+}
+
+#contact_info {
+    float: right;
+    padding-top: 25px;
+    margin-bottom: -20px;
+    width: 25%;
+}
+
+#contact_info ul {
+    list-style: none;
+}
+
+#contact_info ul li {
+    margin: 5px;
+    font-family: fantasy;
+}
+
+#copy {
+    clear: right;
+}

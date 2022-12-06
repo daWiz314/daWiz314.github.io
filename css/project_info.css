@@ -1,0 +1,60 @@
+main {
+    width: 50%;
+    float: left;
+}
+
+main p {
+    font-family: fantasy;
+    font-size: 20px;
+}
+
+.bubble {
+    width: 45%;
+    float: right;
+    clear: right;
+}
+
+.bubble:first-of-type {
+    margin-bottom: 15px;
+}
+
+.bubble img {
+    width: 100%;
+}
+
+.plans {
+    margin: 30px 37px;
+    float: left;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    text-align: center;
+}
+
+.plans span {
+    width: 50%;
+    height: inherit;
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    transition: width 1.5s, height 1.5s;
+}
+
+.plans span:hover {
+    transition: width 1.5s, height 1.5s;
+    width: 400%;
+    height: auto;
+}
+
+.plans figure {
+    padding: 10px;
+}
+
+.plans img {
+    width: 50%;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}

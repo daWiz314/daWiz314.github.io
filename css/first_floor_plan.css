@@ -1,0 +1,14 @@
+img {
+    width: 98%;
+    height: auto;
+}
+
+figure {
+    margin: 100px;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    text-align: center;
+    font-size: 24px;
+}
+

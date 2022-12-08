@@ -1,8 +1,22 @@
+@font-face {
+    font-family: "Flamenco";
+    src: url(../fonts/Flamenco/Flamenco-Regular.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "OldStandardTT";
+    src: url(../fonts/Old_Standard_TT/OldStandardTT-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "OldStandardTT-Bold";
+    src: url(../fonts/Old_Standard_TT/OldStandardTT-Bold.ttf") format("truetype");
+}
 
 /* Here you can start styling. ^_^*/
 
 nav {
-    background-color: rgb(221, 206, 186)
+    background-color: rgb(221, 206, 186);
 }
 
 #sone {
@@ -26,7 +40,7 @@ nav {
 }
 
 body {
-    background-image: url(../img/backgrounds/web%20background.jpeg)
+    background-image: url(../img/backgrounds/web%20background.jpeg);
 }
 
 h1 {

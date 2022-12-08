@@ -1,3 +1,6 @@
+h1 {
+    font-family: "OldStandardTT-Bold";
+}
 
 main {
     margin: 25px 0 25px 0;
@@ -6,7 +9,7 @@ main {
 }
 
 main p {
-    font-family: fantasy;
+    font-family: "Flamenco";
     font-size: 24px;
 }
 

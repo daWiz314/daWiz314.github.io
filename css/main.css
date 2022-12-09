@@ -5,12 +5,14 @@
 
 @font-face {
     font-family: "OldStandardTT";
-    src: url(../fonts/Old_Standard_TT/OldStandardTT-Regular.ttf") format("truetype");
+    src: url(../fonts/Old_Standard_TT/OldStandardTT-Regular.ttf) format("truetype");
 }
 
 @font-face {
     font-family: "OldStandardTT-Bold";
-    src: url(../fonts/Old_Standard_TT/OldStandardTT-Bold.ttf") format("truetype");
+    src: url(../fonts/Old_Standard_TT/OldStandardTT-Bold.ttf) format("truetype");
+    font-weight: bold;
+    font-style: normal;
 }
 
 /* Here you can start styling. ^_^*/

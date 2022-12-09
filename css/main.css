@@ -74,14 +74,12 @@ footer {
         bottom: 0;
         height: 210px;
         font-size: 24px;
-        background-color: white;
     }
 }
 
 @media screen and (min-height: 900px) and (max-width: 1399px) {
     footer {
         position: absolute;
-        background-color: purple;
     }
 }
 
@@ -91,7 +89,6 @@ footer {
         margin-top: 100px;
         font-size: 14px;
         height: 150px;
-        background-color: black;
     }
 }
 

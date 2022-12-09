@@ -49,6 +49,10 @@ h1 {
     font-family: "OldStandardTT-Bold";
 }
 
+figcaption {
+    font-family: "OldStandardTT"
+}
+
 a {
     text-decoration: none;
     color: black;

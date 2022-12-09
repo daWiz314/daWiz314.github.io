@@ -1,3 +1,7 @@
+/*
+    Rule sets here
+*/
+
 @font-face {
     font-family: "Flamenco";
     src: url(../fonts/Flamenco/Flamenco-Regular.ttf) format("truetype");
@@ -13,6 +17,30 @@
     src: url(../fonts/Old_Standard_TT/OldStandardTT-Bold.ttf) format("truetype");
     font-weight: bold;
     font-style: normal;
+}
+
+@media screen and (min-height: 1200px) and (min-width: 1400px) {
+    footer {
+        position: absolute;
+        bottom: 0;
+        height: 210px;
+        font-size: 24px;
+    }
+}
+
+@media screen and (min-height: 900px) and (max-width: 1399px) {
+    footer {
+        position: absolute;
+    }
+}
+
+@media screen and (max-width: 1399px) and (max-height: 1000px) {
+    footer {
+        position: relative;
+        margin-top: 100px;
+        font-size: 14px;
+        height: 150px;
+    }
 }
 
 /* Here you can start styling. ^_^*/
@@ -66,30 +94,6 @@ footer {
     bottom: 0;
     height: 160px;
     width: 100%;
-}
-
-@media screen and (min-height: 1200px) and (min-width: 1400px) {
-    footer {
-        position: absolute;
-        bottom: 0;
-        height: 210px;
-        font-size: 24px;
-    }
-}
-
-@media screen and (min-height: 900px) and (max-width: 1399px) {
-    footer {
-        position: absolute;
-    }
-}
-
-@media screen and (max-width: 1399px) and (max-height: 1000px) {
-    footer {
-        position: relative;
-        margin-top: 100px;
-        font-size: 14px;
-        height: 150px;
-    }
 }
 
 #contact_info {

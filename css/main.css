@@ -63,18 +63,23 @@ a {
     color: black;
 }
 
+img {
+    border: 1px solid black;
+}
+
 footer {
     clear: both;
-    position: absolute;
-    bottom: -20px;
+    position: sticky;
+    bottom: 0px;
     background-color: #b5cae2;
-    height: 160px;
+    height: 135px;
     width: 100%;
 }
 
 #contact_info {
+    height: 100px;
     float: right;
-    padding-top: 25px;
+    padding-top: 20px;
     margin-bottom: -20px;
     width: 25%;
 }
@@ -90,4 +95,6 @@ footer {
 
 #copy {
     clear: right;
+    position: absolute;
+    bottom: -10px;
 }

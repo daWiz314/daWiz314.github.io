@@ -19,30 +19,6 @@
     font-style: normal;
 }
 
-@media screen and (min-height: 1200px) and (min-width: 1400px) {
-    footer {
-        position: absolute;
-        bottom: 0;
-        height: 210px;
-        font-size: 24px;
-    }
-}
-
-@media screen and (min-height: 900px) and (max-width: 1399px) {
-    footer {
-        position: absolute;
-    }
-}
-
-@media screen and (max-width: 1399px) and (max-height: 1000px) {
-    footer {
-        position: relative;
-        margin-top: 100px;
-        font-size: 14px;
-        height: 150px;
-    }
-}
-
 /* Here you can start styling. ^_^*/
 
 nav {
@@ -88,10 +64,10 @@ a {
 }
 
 footer {
-    position: relative;
     clear: both;
+    position: absolute;
+    bottom: -20px;
     background-color: #b5cae2;
-    bottom: 0;
     height: 160px;
     width: 100%;
 }

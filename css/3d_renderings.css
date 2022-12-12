@@ -29,6 +29,10 @@ img {
     width: 300px;
 }
 
+img:hover {
+    cursor: pointer;
+}
+
 .img_container {
     display: flex;
     flex-flow: row;

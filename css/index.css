@@ -22,7 +22,7 @@ container {
 .project {
     margin: 50px;
     width: 300px;
-    height: 125px;
+    height: 150px;
     display: flex;
     flex-flow: row;
     justify-content: center;
@@ -50,14 +50,7 @@ container {
 @media screen and (max-width: 1399px) {
     .project {
         width: 250px;
-        height: 150px;
         font-size: 14px;
-    }
-}
-
-@media screen and (max-width: 1199px) {
-    .project {
-        height: 125px;
     }
 }
 

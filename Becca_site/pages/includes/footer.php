@@ -8,6 +8,6 @@
                     <li>myEmail@Email.com</li>
                 </ul>
             </div>
-            <p id="copy">You Are Awesome &copy;<?php echo date('Y')?>. All rights reserved.</p>
+            <div id="copy">You Are Awesome &copy;<?php echo date('Y')?>. All rights reserved.</div>
         </div>
-    </footer>
+</footer>

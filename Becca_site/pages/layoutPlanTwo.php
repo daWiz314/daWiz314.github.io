@@ -8,7 +8,7 @@
     <meta name="author" content="">
 
     <!-- Bootstrap -->
-    <link href="../css/szbootstrap_5.0.2/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bootstrap_5.0.2/bootstrap.min.css" rel="stylesheet">
 
     <!-- Lightbox -->
     <link href="../css/lightbox.css" rel="stylesheet">
@@ -50,21 +50,9 @@
     </nav>
     <main>
         <figure>
-            <img src="../img/floor_plans/First%20Floor%20-%20Web%20Design.png" alt="">
-            <figcaption>Floor Plan One</figcaption>
+            <img src="../img/layouts/Floor%20two%20Layout%20with%20Materials.png" alt="">
+            <figcaption>Floor Layout Two</figcaption>
         </figure>
     </main>
-    <footer>
-        <div class="container">
-            <div id="contact_info">
-                <h5>Contact Info:</h5>
-                <ul>
-                    <li>Rebecca Martin</li>
-                    <li>91872398172389</li>
-                    <li>myEmail@Email.com</li>
-                </ul>
-            </div>
-            <p id="copy">You Are Awesome &copy;2021. All rights reserved.</p>
-        </div>
-    </footer>
+    <?php include 'footer.php'; ?>
 </body></html>

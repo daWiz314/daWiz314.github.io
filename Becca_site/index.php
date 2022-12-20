@@ -63,7 +63,7 @@
         <div class="container">
             <h1>A Built-In Family</h1>
             <main>
-                <p>Hello, my name is Rebecca James. I am a senior at Purdue Fort Wayne studying Interior Design. I
+                <p> Hello, my name is Rebecca James. I am a senior at Purdue Fort Wayne studying Interior Design. I
                     created this website to showcase my Interior Design Senior Project for those who may be unable to
                     make it to our showcase as well as a chance to showcase a few other talents I picked up during my
                     four years at PFW. The base line of this project was to take a current project that is happening,

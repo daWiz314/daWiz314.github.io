@@ -9,16 +9,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a href="index.html" class="nav-link" aria-current="page">Home</a></li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="pages/stwo.html">Project Information</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="pages/sthree.html">Designed Spaces</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="pages/sfour.html">3D Renderings</a>
-                    </li>
+                    <?php include 'nav_helper.php' ?>
                 </ul>
             </div>
         </div>

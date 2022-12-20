@@ -68,10 +68,8 @@ img {
 }
 
 footer {
-    clear: both;
-    position: sticky;
-    bottom: 0px;
-    background-color: #b5cae2;
+/*    background-color: #b5cae2;*/
+    background-color: black;
     height: 135px;
     width: 100%;
 }

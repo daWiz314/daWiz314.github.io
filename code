@@ -1,7 +1,7 @@
 
 #Test change to verify git is working
 
-$VERSION = "1.1.1"
+$VERSION = "1.1.2"
 $LOGSPATH = ""
 # Website for the script
 $website = "dawiz314.github.io"
@@ -18,196 +18,14 @@ class bitlockerDrive {
     }
 }
 
-function getKeyPress {
-    $pressedKey = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-    $key = $pressedKey.Character
-    return $key
-}
-
-function confirm {
-    param (
-        [Parameter(Mandatory=$true)][string]$message
-    )
-    Clear-Host
-    Write-Host $message -ForegroundColor Red
-    Write-Host "Are you sure you want to do this? (y/n)" -ForegroundColor Red
-    $choice = getKeyPress
-    if ($choice -eq 'n') {
-        Clear-Host
-        return -1
-    } elseif ($choice -eq 'y') {
-        Clear-Host
-        return 1
-    } else {
-        confirm
-    }
-}
-
-# Count down function to streamline the code
-
-function countdown {
-    param (
-        [Parameter(Mandatory=$true)][int]$seconds,
-        [Parameter(Mandatory=$true)][string]$message
-    )
-    Clear-Host
-    Write-Host $message " IN " $seconds " SECONDS" -ForegroundColor Red
-    Start-Sleep 1
-    for ($i=$seconds-1; $i -gt 0; $i--) {
-        Clear-Host
-        Write-Host $message " IN " $i " SECONDS" -ForegroundColor Red
-        Start-Sleep 1
-    }
-    return # To actually do the thing in $i seconds
-}
-
-# function to get change log and read it
-function changeLog {
-    Clear-Host
-    $log = "C:\Users\$env:USERNAME\AppData\Local\Temp\pc_cleanup\change_log.txt"
-    irm $website/patch_notes.txt > $log
-    Get-Content -Path $log -Raw | more
-    getKeyPress
-}
-
-
-function StandardCleanup {
-    if ($Global:LOGSPATH -eq 0) {
-        StandardCleanupNoLogs
-    } else {
-        StandardCleanupLogs
-    }
-}
-
-function sfc_log {
-    sfc.exe /scannow | Tee-Object -Variable container
-    #Splits them into groups
-    $container = $container -split " "
-    $newContainer = [System.Collections.ArrayList]::new()
-    foreach ($group in $container) {
-        # If it actually contains letters, numbers, or symbols, then we want to split it up
-        if ($group -match '[\s+a-z+0-9+.+%+/-]') {
-            $group = $group -split ""
-            foreach ($letter in $group) {
-                # For every letter that is NOT a space, add it to the array
-                if ($letter -match '[\a-z+0-9+.+%+/-]') {
-                    $newContainer.Insert($newContainer.Count, $letter)
-                    continue
-                }           
-            }
-            #Add a space after each letter
-            $newContainer.Insert($newContainer.Count, " ")
-        } else {
-            continue
-        }
-    } 
-
-    $log = $LOGSPATH[2]
-    $time = Get-Date -Format "HH:mm:ss"
-    #Output it to a file
-    Out-File $log\sfc.txt -InputObject "Starting SFC at: $time" -Append
-    
-    for ($i=0; $i -lt $newContainer.Count; $i++) {
-        if ($newContainer[$i] -eq ".") {
-            Out-File $log\sfc.txt -InputObject $newContainer[$i] -Append
-        } else {
-            Out-File $log\sfc.txt -InputObject $newContainer[$i] -Append -NoNewline
-        }
-    }
-}
-
-function checkdisk_no_log {
-    foreach($drive in $Global:unlockedDrives) {
-        echo y | chkdsk $drive.driveLetter /f /r /x /b
-    }
-}
-
-function checkdisk_log {
-    $log = $Global:LOGSPATH[2]
-    echo $log
-    getKeyPress
-    $time = Get-Date -Format "HH:mm:ss"
-    Out-File $log\chkdsk.txt -InputObject "Starting CHKDSK at: $time" -Append
-    foreach($drive in $Global:unlockedDrives) {
-        Out-File $log\chkdsk.txt -InputObject ("Running CHKDSK on drive: " + [String]$drive.driveLetter) -Append
-        echo y | chkdsk $drive.driveLetter /f /r /x /b | Tee-Object -FilePath $log\chkdsk.txt
-    }
-    #echo y | chkdsk C: /f /r /x /b | Tee-Object -FilePath $log\chkdsk.txt
-}
-function StandardCleanupNoLogs {
-    Clear-Host
-    Write-Host "Starting standard cleanup with no logs..."
-    Dism.exe /online /cleanup-image /restorehealth
-    sfc.exe /scannow
-    checkdisk_no_log
-    countdown -seconds 10 -message "SHUTTING DOWN"
-    shutdown /f /r /t 0
-}
-
-function StandardCleanupLogs {
-    Clear-Host
-    if ($LOGSPATH = 0) {
-        StandardCleanupNoLogs
-    }
-    $log = $Global:LOGSPATH[2]
-    Write-Host "Starting standard cleanup with logs in user account folder"
-    Write-Host "Logs will be located in " $log
-    Write-Host "Running DISM" -ForegroundColor Green
-    $time = Get-Date -Format "HH:mm:ss"
-    Write-Host "Current Time: $time"
-    Write-Host "DO NOT CLOSE THIS WINDOW" -ForegroundColor Red
-    Out-File $log\DISM.txt -InputObject "Time Started $time" -Append
-    Dism.exe /online /cleanup-image /restorehealth | Tee-Object -FilePath $log\DISM.txt
-    Write-Host "Running SFC" -ForegroundColor Green
-    $time = Get-Date -Format "HH:mm:ss"
-    Write-Host "Current Time: $time"
-    Write-Host "DO NOT CLOSE THIS WINDOW" -ForegroundColor Red
-    sfc_log
-    # echo y | chkdsk C: /f /r /x /b 
-    Write-Host "Running CHKDSK" -ForegroundColor Green
-    checkdisk_log
-    getkeypress
-    countdown -seconds 10 -message "SHUTTING DOWN"
-    shutdown /f /r /t 0
-    getkeyPress
-}
-
-function CreateAdminAccount {
-    Clear-Host
-    Write-Host "Activating admin account..."
-    Try {
-        net user administrator /active:yes
-    } Catch {
-        Write-Host "Unable to activate admin account!" -ForegroundColor Red
-        Start-Sleep 1.5
-        return
-    }
-    Start-Sleep 1.5
-    return
-}
-
-function DisableAdminAccount {
-    Clear-Host
-    Write-Host "Disabling admin account..."
-    Try {
-        net user administrator /active:no
-    } Catch {
-        Write-Host "Unable to disable admin account!" -ForegroundColor Red
-        Start-Sleep 1.5
-        return
-    }
-    Write-Host "Admin account disabled!" -ForegroundColor Green
-    Start-Sleep 1.5
-    return
-}
-
+# Need to fix this so it can read all drives, and stop erroring out
 function bitlocker_helper {
     $container = fsutil.exe fsinfo drives
     $container = $container -split ":"
     $container = ($container | Where-Object {$_ -match "\s\w"}) -replace "\\", ""
     Clear-Host
 
-    $bitlockerDrives = @()
+    $Global:bitlockerDrives = @()
     
     foreach ($drive in $container.trim()) {
         $container2 = manage-bde.exe $drive":" -status
@@ -294,6 +112,290 @@ function unlockDrive {
         }
     }
 }
+
+function getKeyPress {
+    $pressedKey = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+    $key = $pressedKey.Character
+    return $key
+}
+
+function confirm {
+    param (
+        [Parameter(Mandatory=$true)][string]$message
+    )
+    Clear-Host
+    Write-Host $message -ForegroundColor Red
+    Write-Host "Are you sure you want to do this? (y/n)" -ForegroundColor Red
+    $choice = getKeyPress
+    if ($choice -eq 'n') {
+        Clear-Host
+        return -1
+    } elseif ($choice -eq 'y') {
+        Clear-Host
+        return 1
+    } else {
+        confirm
+    }
+}
+
+# Count down function to streamline the code
+
+function countdown {
+    param (
+        [Parameter(Mandatory=$true)][int]$seconds,
+        [Parameter(Mandatory=$true)][string]$message
+    )
+    Clear-Host
+    Write-Host $message " IN " $seconds " SECONDS" -ForegroundColor Red
+    Start-Sleep 1
+    for ($i=$seconds-1; $i -gt 0; $i--) {
+        Clear-Host
+        Write-Host $message " IN " $i " SECONDS" -ForegroundColor Red
+        Start-Sleep 1
+    }
+    return # To actually do the thing in $i seconds
+}
+
+# function to get change log and read it
+function changeLog {
+    Clear-Host
+    $log = "C:\Users\$env:USERNAME\AppData\Local\Temp\pc_cleanup\change_log.txt"
+    try {
+        irm $website/patch_notes.txt > $log
+    }
+    catch {
+        Write-Host "Unable to get patch notes!" -ForegroundColor Red
+        Start-Sleep 1.5
+        return
+    }
+    Get-Content -Path $log -Raw | more
+    getKeyPress
+}
+
+
+function StandardCleanup {
+    Clear-Host
+    Write-Host "Standard Cleanup" -ForegroundColor Green
+    Write-Host "1) Without source"
+    Write-Host "2) With source"
+    Write-Host "q) Back to main menu"
+    $choice = getKeyPress
+    switch ($choice) {
+        1 {
+            if ($Global:LOGSPATH -eq 0) {
+                StandardCleanupNoLogs
+            } else {
+                StandardCleanupLogs
+            }
+        }
+        2 {
+            if ($Global:LOGSPATH -eq 0) {
+                StandardCleanupWithSourceNoLogs
+            } else {
+                StandardCleanupWithSource
+            }
+        }
+        'q' {
+            MainMenu
+        }
+    }
+}
+
+# Function standard cleanup with source and no logging
+function StandardCleanupWithSourceNoLogs {
+    Write-Host "Starting standard cleanup without logs in user account folder"
+    Write-Host "Running DISM" -ForegroundColor Green
+    $time = Get-Date -Format "HH:mm:ss"
+    Write-Host "Current Time: $time"
+    Write-Host "DO NOT CLOSE THIS WINDOW" -ForegroundColor Red
+    
+    # Get the source
+    $source = ""
+    # run this to update drives
+    bitlocker_helper
+    foreach ($drive in $Global:bitlockerDrives) {
+        if ([System.IO.File]::Exists($drive.driveLetter + "\sources\install.wim")) {
+            $source = $drive.driveLetter + "\sources\install.wim"
+            break
+        } elseif ([System.IO.File]::Exists($drive.driveLetter + "\sources\install.esd")) {
+            $source = $drive.driveLetter + "\sources\install.esd"
+            break
+        }
+    }
+    Dism.exe /online /cleanup-image /restorehealth /source:$source
+    sfc.exe /scannow
+    checkdisk_no_log
+    countdown -seconds 10 -message "SHUTTING DOWN"
+    shutdown /f /r /t 0
+    getkeyPress
+}
+
+# Function standard cleanup with source
+function StandardCleanupWithSource {
+    $log = $Global:LOGSPATH[2]
+    Write-Host "Starting standard cleanup with logs in user account folder"
+    Write-Host "Logs will be located in " $log
+    Write-Host "Running DISM" -ForegroundColor Green
+    $time = Get-Date -Format "HH:mm:ss"
+    Write-Host "Current Time: $time"
+    Write-Host "DO NOT CLOSE THIS WINDOW" -ForegroundColor Red
+    Out-File $log\DISM.txt -InputObject "Time Started $time" -Append
+    
+    # Get the source
+    $source = ""
+    # run this to update drives
+    bitlocker_helper
+    foreach ($drive in $Global:bitlockerDrives) {
+        if ([System.IO.File]::Exists($drive.driveLetter + "\sources\install.wim")) {
+            $source = $drive.driveLetter + "\sources\install.wim"
+            break
+        } elseif ([System.IO.File]::Exists($drive.driveLetter + "\sources\install.esd")) {
+            $source = $drive.driveLetter + "\sources\install.esd"
+            break
+        }
+    }
+    Dism.exe /online /cleanup-image /restorehealth /source:$source | Tee-Object -FilePath $log\DISM.txt
+    sfc_log
+    checkdisk_log
+    countdown -seconds 10 -message "SHUTTING DOWN"
+    shutdown /f /r /t 0
+    getkeyPress
+}
+
+function sfc_log {
+    sfc.exe /scannow | Tee-Object -Variable container
+    #Splits them into groups
+    $container = $container -split " "
+    $newContainer = [System.Collections.ArrayList]::new()
+    foreach ($group in $container) {
+        # If it actually contains letters, numbers, or symbols, then we want to split it up
+        if ($group -match '[\s+a-z+0-9+.+%+/-]') {
+            $group = $group -split ""
+            foreach ($letter in $group) {
+                # For every letter that is NOT a space, add it to the array
+                if ($letter -match '[\a-z+0-9+.+%+/-]') {
+                    $newContainer.Insert($newContainer.Count, $letter)
+                    continue
+                }           
+            }
+            #Add a space after each letter
+            $newContainer.Insert($newContainer.Count, " ")
+        } else {
+            continue
+        }
+    } 
+
+    $log = $LOGSPATH[2]
+    $time = Get-Date -Format "HH:mm:ss"
+    #Output it to a file
+    Out-File $log\sfc.txt -InputObject "Starting SFC at: $time" -Append
+    
+    for ($i=0; $i -lt $newContainer.Count; $i++) {
+        if ($newContainer[$i] -eq ".") {
+            Out-File $log\sfc.txt -InputObject $newContainer[$i] -Append
+        } else {
+            Out-File $log\sfc.txt -InputObject $newContainer[$i] -Append -NoNewline
+        }
+    }
+}
+
+function checkdisk_no_log {
+    foreach($drive in $Global:bitLockerDrives) {
+        try {
+            echo y | chkdsk $drive.driveLetter /f /r /x /b
+        }
+        catch {
+            Write-Host "Unable to run CHKDSK on drive: " $drive.driveLetter -ForegroundColor Red
+            Start-Sleep 1.5
+            continue
+        
+        }
+    }
+}
+
+function checkdisk_log {
+    $log = $Global:LOGSPATH[2]
+    $time = Get-Date -Format "HH:mm:ss"
+    Out-File $log\chkdsk.txt -InputObject "Starting CHKDSK at: $time" -Append
+    foreach($drive in $Global:unlockedDrives) {
+        Out-File $log\chkdsk.txt -InputObject ("Running CHKDSK on drive: " + [String]$drive.driveLetter) -Append
+        try {
+            echo y | chkdsk $drive.driveLetter /f /r /x /b | Tee-Object -FilePath $log\chkdsk.txt
+        }
+        catch {
+            Write-Host "Unable to run CHKDSK on drive: " $drive.driveLetter -ForegroundColor Red
+            Start-Sleep 1.5
+            continue
+        }
+    }
+    #echo y | chkdsk C: /f /r /x /b | Tee-Object -FilePath $log\chkdsk.txt
+}
+function StandardCleanupNoLogs {
+    Clear-Host
+    Write-Host "Starting standard cleanup with no logs..."
+    Dism.exe /online /cleanup-image /restorehealth
+    sfc.exe /scannow
+    checkdisk_no_log
+    countdown -seconds 10 -message "SHUTTING DOWN"
+    shutdown /f /r /t 0
+}
+
+function StandardCleanupLogs {
+    Clear-Host
+    if ($LOGSPATH = 0) {
+        StandardCleanupNoLogs
+    }
+    $log = $Global:LOGSPATH[2]
+    Write-Host "Starting standard cleanup with logs in user account folder"
+    Write-Host "Logs will be located in " $log
+    Write-Host "Running DISM" -ForegroundColor Green
+    $time = Get-Date -Format "HH:mm:ss"
+    Write-Host "Current Time: $time"
+    Write-Host "DO NOT CLOSE THIS WINDOW" -ForegroundColor Red
+    Out-File $log\DISM.txt -InputObject "Time Started $time" -Append
+    Dism.exe /online /cleanup-image /restorehealth | Tee-Object -FilePath $log\DISM.txt
+    Write-Host "Running SFC" -ForegroundColor Green
+    $time = Get-Date -Format "HH:mm:ss"
+    Write-Host "Current Time: $time"
+    Write-Host "DO NOT CLOSE THIS WINDOW" -ForegroundColor Red
+    sfc_log
+    # echo y | chkdsk C: /f /r /x /b 
+    Write-Host "Running CHKDSK" -ForegroundColor Green
+    checkdisk_log
+    countdown -seconds 10 -message "SHUTTING DOWN"
+    shutdown /f /r /t 0
+    getkeyPress
+}
+
+function CreateAdminAccount {
+    Clear-Host
+    Write-Host "Activating admin account..."
+    Try {
+        net user administrator /active:yes
+    } Catch {
+        Write-Host "Unable to activate admin account!" -ForegroundColor Red
+        Start-Sleep 1.5
+        return
+    }
+    Start-Sleep 1.5
+    return
+}
+
+function DisableAdminAccount {
+    Clear-Host
+    Write-Host "Disabling admin account..."
+    Try {
+        net user administrator /active:no
+    } Catch {
+        Write-Host "Unable to disable admin account!" -ForegroundColor Red
+        Start-Sleep 1.5
+        return
+    }
+    Write-Host "Admin account disabled!" -ForegroundColor Green
+    Start-Sleep 1.5
+    return
+}
+
 
 function BootOptions {
     Clear-Host
@@ -402,72 +504,22 @@ function create_folders {
                 return (0, $LOGSPATH)
         }
     }
-            Try {
-                mkdir C:\Users\$env:USERNAME\AppData\Local\Temp\pc_cleanup\logs\$date
-                create_folders
-            } Catch {
-                Write-Host "Unable to create log folder!" -ForegroundColor Red
-                Start-Sleep 1.5
-                return (0, $LOGSPATH)
-            }
-        } else {
-            Try {
-                mkdir C:\Users\$env:USERNAME\AppData\Local\Temp\pc_cleanup\logs
-                create_folders
-            } Catch {
+        Try {
+            mkdir C:\Users\$env:USERNAME\AppData\Local\Temp\pc_cleanup\logs\$date
+            create_folders
+        } Catch {
             Write-Host "Unable to create log folder!" -ForegroundColor Red
             Start-Sleep 1.5
             return (0, $LOGSPATH)
-            }
         }
-}
-
-function recoverDeletedUsersFolders {
-    Clear-Host "Still working on this!"
-    Start-Sleep 1.5
-    return
-    [Parameter(Mandatory=$true)][string]$user
-    Start-Sleep 2
-    $choice = confirm("Copy deleted user: " +$user+ " folders?")
-    if ($choice -eq 1) {
-        Clear-Host
-        Write-Host "Copying deleted user: "$user  " folders"
-        $path = "C:\Users\$user"
-        $dest = "C:\Users\$env:USERNAME\$user"
+    } else {
         Try {
-            $i = 0
-            while ($true) {
-                $i++
-                if (Test-Path -Path $dest) {
-                    $dest = "C:\Users\$env:USERNAME\$user$i"
-                    continue
-                } else {
-                    break
-                    Write-Host "In Loop"
-                    
-                }
-            }
-            mkdir $dest
-        } catch {
-            Write-Host "Unable to create folder to move data to!" -ForegroundColor Red
-            Start-Sleep 1.5
-            return
-        }
-        
-        Try {
-            robocopy $path $dest /MIR /R:1 /W:1 /MT:128 /log:$LOGSPATH[1]\$user.txt /j
-            Try {
-                Remove-Directory -r -force -$path
-
-            } catch {
-                Write-Host "Unable to delete " $user " folder!" -ForegroundColor Red
-                Start-Sleep 1.5
-                return
-            }
+            mkdir C:\Users\$env:USERNAME\AppData\Local\Temp\pc_cleanup\logs
+            create_folders
         } Catch {
-            Write-Host "Unable to copy users folders!" -ForegroundColor Red
-            Start-Sleep 1.5
-            return
+        Write-Host "Unable to create log folder!" -ForegroundColor Red
+        Start-Sleep 1.5
+        return (0, $LOGSPATH)
         }
     }
 }
@@ -542,7 +594,6 @@ function deleteUser {
             Write-Host "User deleted!" -ForegroundColor Green
             Start-Sleep .5
             Clear-Host
-            recoverDeletedUsersFolders($user)
         } else {
             return
         }
@@ -627,6 +678,31 @@ function userControl {
     userControl
 }
 
+# Settings for new setups or for existing set ups
+# To be added onto in the future
+# 1) Will reset the windows update that sometimes bugs out with updates. It will reset the folders related and reset the service involved
+
+function newSetUpSettings {
+    Clear-Host
+    Write-Host "This is still being worked on, come back later!" -ForegroudColor Red
+    Write-Host "New Setup Settings / OS Settings" -ForegroundColor Green
+    Write-Host "Choose an option:"
+    Write-Host "1) Reset Windows Update"
+    Write-Host "2) Change Time Zone"
+    Write-Host "q) Back to main menu"
+    $option = getKeyPress
+    switch ($option) {
+        1 {
+            resetWindowsUpdate
+        }
+        2 {
+            changeTimeZone
+        }
+        "q" {
+            mainMenu
+        }
+    }
+}
 
 # Resets the windows update folders related to it.
 function resetWindowsUpdate {
@@ -655,34 +731,6 @@ function resetWindowsUpdate {
     Write-Host "Windows Update reset!" -ForegroundColor Green
     Start-Sleep 1.5
     return
-}
-
-
-
-# Settings for new setups or for existing set ups
-# To be added onto in the future
-# 1) Will reset the windows update that sometimes bugs out with updates. It will reset the folders related and reset the service involved
-
-function newSetUpSettings {
-    Clear-Host
-    Write-Host "This is still being worked on, come back later!" -ForegroudColor Red
-    Write-Host "New Setup Settings / OS Settings" -ForegroundColor Green
-    Write-Host "Choose an option:"
-    Write-Host "1) Reset Windows Update"
-    Write-Host "2) Change Time Zone"
-    Write-Host "q) Back to main menu"
-    $option = getKeyPress
-    switch ($option) {
-        1 {
-            resetWindowsUpdate
-        }
-        2 {
-            changeTimeZone
-        }
-        "q" {
-            mainMenu
-        }
-    }
 }
 
 # Function for changing time zone, only adding US based ones for now, will add more later.
@@ -714,9 +762,22 @@ function changeTimeZone {
             mainMenu
         }
     }
-    # TODO:
-        # Add error catching here
-    W32tm.exe /resync /force
+    try {
+        W32tm.exe /resync
+    } 
+    catch {
+        try {
+            Start-Service -Name "W32Time" -ErrorAction Stop
+            W32tm.exe /resync /force
+        } 
+        catch [System.Exception] {
+            Write-Host "Unable to resync time, service unable to start" -ForegroundColor red
+            Start-Sleep 3
+            return
+        }
+    }
+    
+    getkeypress
     return
 }
 
@@ -724,7 +785,7 @@ function changeTimeZone {
 function MainMenu {
     while ($true) {
         Clear-Host
-        if ($LOGSPATH -eq 0) {
+        if ($Global:LOGSPATH -eq 0) {
             Write-Host "Logs turned off!" -ForegroundColor darkRed
         } else {
             Write-Host "Logs turned on!" -ForegroundColor darkGreen

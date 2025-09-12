@@ -1,0 +1,28 @@
+main p, #final_block p {
+    font-family: 'Flamenco';
+    font-size: 20px;
+}
+
+#floor_plans {
+    margin: 15px;
+    text-align: center;
+    display: flex;
+    flex-wrap: row wrap;
+    justify-content: space-around;
+}
+
+#floor_plans span {
+    width: 100%;
+    height: inherit;
+    transition: width 1s, height 1s;
+}
+
+#floor_plans span:hover {
+    transition: width 2s, height 2s;
+    width: 1000%;
+    height: auto;
+}
+
+#floor_plans img {
+    width: 50%;
+}

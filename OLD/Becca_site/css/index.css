@@ -1,0 +1,80 @@
+
+main {
+    margin: 25px 0 25px 0;
+    width: 100%;
+    text-align: center;
+}
+
+main p {
+    font-family: "Flamenco";
+    font-size: 24px;
+}
+
+container {
+    margin: 25px 0 25px 0;
+    width: 100%;
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+}
+
+
+.project {
+    margin: 50px;
+    width: 300px;
+    height: 150px;
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    background-color: inherit;
+    border-radius: 25%;
+    color: gray;
+    box-shadow: 5px 5px 10px;
+    border: 2px solid;
+    border-style: outset;
+}
+
+@media screen and (min-width: 1400px) {
+    h1 {
+        font-size: 42px;
+    }
+    main p {
+        font-size: 32px;
+    }
+    .project {
+        height: 200px;
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 1399px) {
+    .project {
+        width: 250px;
+        font-size: 14px;
+    }
+}
+
+.project:hover {
+    color: gray;
+    box-shadow: inset 20px 20px 30px hsl(0deg 0% 0% / 0.25), -5px -5px 10px;
+    border: none;
+    margin-left: 52px;
+}
+
+.project *:hover {
+    cursor: pointer;
+    
+}
+
+.project a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.project * {
+    color: black;
+    text-decoration: none;
+    font-family: "OldStandardTT";
+}

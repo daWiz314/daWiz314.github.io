@@ -1,0 +1,99 @@
+/*
+    Rule sets here
+*/
+
+@font-face {
+    font-family: "Flamenco";
+    src: url(../fonts/Flamenco/Flamenco-Regular.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "OldStandardTT";
+    src: url(../fonts/Old_Standard_TT/OldStandardTT-Regular.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "OldStandardTT-Bold";
+    src: url(../fonts/Old_Standard_TT/OldStandardTT-Bold.ttf) format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* Here you can start styling. ^_^*/
+
+nav {
+    background-color: rgb(221, 206, 186);
+    font-family: "OldStandardTT";
+}
+
+#sone {
+	padding-top:4rem;
+    margin: 50px 0 50px 0;
+}
+
+#stwo {
+	padding-top:4rem;
+	min-height: 100vh;
+}
+
+#sthree {
+	padding-top:4rem;
+	min-height: 100vh;
+}
+
+#sfour {
+	padding-top:4rem;
+	min-height: 100vh;
+}
+
+body {
+    background-image: url(../img/backgrounds/web%20background.jpeg);
+}
+
+h1 {
+    font-family: "OldStandardTT-Bold";
+}
+
+figcaption {
+    font-family: "OldStandardTT"
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+img {
+    border: 1px solid black;
+}
+
+footer {
+/*    background-color: #b5cae2;*/
+    background-color: black;
+    height: 135px;
+    width: 100%;
+}
+
+#contact_info {
+    height: 100px;
+    float: right;
+    padding-top: 20px;
+    margin-bottom: -20px;
+    width: 25%;
+}
+
+#contact_info ul {
+    list-style: none;
+}
+
+#contact_info ul li {
+    margin: 5px;
+    font-family: "Flamenco";
+}
+
+#copy {
+    clear: right;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}

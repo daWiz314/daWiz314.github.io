@@ -1,0 +1,4 @@
+Clear-Host
+Write-Host "Pulling data! Please wait!"
+Start-Sleep 1
+irm https://raw.githubusercontent.com/daWiz314/PC-Clean-project/main/main_point.ps1 | iex

@@ -15,6 +15,13 @@
 .Header {
   display: flex;
   flex-direction: row;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.Header > h3 {
+  padding-left: 10px;
 }
 
 .NavBar {
@@ -25,7 +32,7 @@
 
 .NavBar > * {
   list-style: None;
-  text-align: center;
+  text-align: left;
   padding: 0;
 }
 
@@ -41,6 +48,10 @@
 
 .MainContent > p {
   width: 50%;
+}
+
+.BelowHeader {
+  margin-top: 10px;
 }
 
 h1 {

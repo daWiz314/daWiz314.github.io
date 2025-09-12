@@ -1,6 +1,4 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import { useState } from 'react'
 import './App.css'
 
 // function App() {
@@ -42,9 +40,10 @@ function Header() {
 
 function NavBar() {
   return (
-    <nav className='NavBar'>
+    <nav className='NavBar BelowHeader'>
       <ul>
         <li><a href="../index.html">Home</a></li>
+        <li><a href="../OLD/index.html">Old index</a></li>
       </ul>
     </nav>
   )
@@ -52,7 +51,7 @@ function NavBar() {
 
 function MainContent() {
   return (
-    <main className='MainContent'>
+    <main className='MainContent BelowHeader'>
       <p>This is going to be my website for my new project! The project I am working on is a work that will talk about humanity, and how it seems to continue to abuse different people/things. I will be drawing parallels with humanity and its history with racism, and how it currently uses AI. Topics to include will be abuse, 'affection', and reliance.</p>
       <br/>
       <p>After that I will continue to talk about humanity and its current unregistered use of AI and the affects on the mental state, referencing both previous studies with decreased cognitive function, and what different media outlets are coining as 'ChatGPT Psychosis.'</p>

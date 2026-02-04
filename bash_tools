@@ -1,0 +1,2 @@
+curl https://raw.githubusercontent.com/daWiz314/bash_stuff/refs/heads/main/border.sh -o temp_box.txt;
+source ./temp_box.txt;
